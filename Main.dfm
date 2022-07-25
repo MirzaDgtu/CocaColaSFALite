@@ -88,7 +88,8 @@ object fmMain: TfmMain
     Height = 495
     Align = alClient
     TabOrder = 2
-    ExplicitWidth = 262
+    ExplicitLeft = -3
+    ExplicitTop = -6
     object ggProgress: TGauge
       Left = 1
       Top = 464
