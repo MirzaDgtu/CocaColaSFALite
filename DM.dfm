@@ -7,4 +7,10 @@ object AppData: TAppData
     Left = 40
     Top = 32
   end
+  object Cmd: TADOCommand
+    Connection = Connection
+    Parameters = <>
+    Left = 40
+    Top = 96
+  end
 end

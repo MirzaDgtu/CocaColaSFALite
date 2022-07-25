@@ -8,6 +8,7 @@ uses
 type
   TAppData = class(TDataModule)
     Connection: TADOConnection;
+    Cmd: TADOCommand;
   private
     { Private declarations }
   public
