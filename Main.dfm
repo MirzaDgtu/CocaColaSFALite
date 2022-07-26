@@ -3,7 +3,7 @@ object fmMain: TfmMain
   Top = 0
   Caption = 'fmMain'
   ClientHeight = 514
-  ClientWidth = 475
+  ClientWidth = 592
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,29 +16,26 @@ object fmMain: TfmMain
   object sbMain: TStatusBar
     Left = 0
     Top = 495
-    Width = 475
+    Width = 592
     Height = 19
     Panels = <>
-    ExplicitLeft = 224
-    ExplicitTop = 264
-    ExplicitWidth = 0
+    ExplicitWidth = 475
   end
   object pnlLog: TPanel
-    Left = 240
+    Left = 288
     Top = 0
-    Width = 235
+    Width = 304
     Height = 495
     Align = alRight
     TabOrder = 1
     object tbBtns: TToolBar
       Left = 1
       Top = 471
-      Width = 233
+      Width = 302
       Height = 23
       Align = alBottom
       TabOrder = 0
-      ExplicitTop = 470
-      ExplicitWidth = 211
+      ExplicitWidth = 233
       object ToolButton1: TToolButton
         Left = 0
         Top = 0
@@ -57,43 +54,46 @@ object fmMain: TfmMain
         Caption = 'ToolButton3'
         ImageIndex = 2
       end
+      object ToolButton4: TToolButton
+        Left = 69
+        Top = 0
+        Caption = 'ToolButton4'
+        ImageIndex = 3
+      end
     end
     object gbxLog: TGroupBox
       Left = 1
       Top = 1
-      Width = 233
+      Width = 302
       Height = 470
       Align = alClient
       Caption = '&'#1051#1086#1075' '#1089#1086#1073#1099#1090#1080#1081
       TabOrder = 1
-      ExplicitWidth = 211
+      ExplicitWidth = 233
       object memoLog: TMemo
         Left = 2
         Top = 15
-        Width = 229
+        Width = 298
         Height = 453
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 0
-        ExplicitTop = 16
-        ExplicitWidth = 185
-        ExplicitHeight = 89
+        ExplicitLeft = 4
+        ExplicitTop = 11
       end
     end
   end
   object pnlMain: TPanel
     Left = 0
     Top = 0
-    Width = 240
+    Width = 288
     Height = 495
     Align = alClient
     TabOrder = 2
-    ExplicitLeft = -3
-    ExplicitTop = -6
+    ExplicitWidth = 240
     object ggProgress: TGauge
       Left = 1
       Top = 464
-      Width = 238
+      Width = 286
       Height = 30
       Align = alBottom
       Progress = 0
@@ -102,7 +102,7 @@ object fmMain: TfmMain
     object imLogo: TImage
       Left = 1
       Top = 1
-      Width = 238
+      Width = 286
       Height = 128
       Align = alTop
       Picture.Data = {
@@ -1559,5 +1559,70 @@ object fmMain: TfmMain
       Stretch = True
       ExplicitWidth = 214
     end
+    object gbxMoves: TGroupBox
+      Left = 1
+      Top = 129
+      Width = 286
+      Height = 112
+      Align = alTop
+      Caption = '&'#1055#1072#1085#1077#1083#1100' '#1076#1077#1081#1089#1090#1074#1080#1081
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+      object btnGetMain: TBitBtn
+        Left = 2
+        Top = 24
+        Width = 112
+        Height = 25
+        Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
+        TabOrder = 0
+      end
+      object btnParseXml: TBitBtn
+        Left = 2
+        Top = 48
+        Width = 112
+        Height = 25
+        Caption = '&'#1057#1087#1072#1088#1089#1080#1090#1100' XML'
+        TabOrder = 1
+      end
+      object btnLoadToDB: TBitBtn
+        Left = 3
+        Top = 72
+        Width = 111
+        Height = 25
+        Caption = 'btnLoadToDB'
+        TabOrder = 2
+      end
+    end
+  end
+  object AL: TActionList
+    Left = 536
+    Top = 80
+  end
+  object IL: TImageList
+    Left = 536
+    Top = 136
+  end
+  object OD: TOpenDialog
+    Left = 536
+    Top = 192
+  end
+  object Msg: TIdMessage
+    AttachmentEncoding = 'MIME'
+    BccList = <>
+    CCList = <>
+    Encoding = meDefault
+    FromList = <
+      item
+      end>
+    Recipients = <>
+    ReplyTo = <>
+    ConvertPreamble = True
+    Left = 536
+    Top = 248
   end
 end

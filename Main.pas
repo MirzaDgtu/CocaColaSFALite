@@ -5,7 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Samples.Gauges, Vcl.ExtCtrls,
-  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ToolWin, Vcl.Imaging.pngimage;
+  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ToolWin, Vcl.Imaging.pngimage, Vcl.Buttons,
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, IdBaseComponent,
+  IdMessage;
 
 type
   TfmMain = class(TForm)
@@ -20,6 +22,15 @@ type
     memoLog: TMemo;
     gbxLog: TGroupBox;
     imLogo: TImage;
+    gbxMoves: TGroupBox;
+    btnGetMain: TBitBtn;
+    ToolButton4: TToolButton;
+    AL: TActionList;
+    IL: TImageList;
+    OD: TOpenDialog;
+    Msg: TIdMessage;
+    btnParseXml: TBitBtn;
+    btnLoadToDB: TBitBtn;
   private
     { Private declarations }
   public
