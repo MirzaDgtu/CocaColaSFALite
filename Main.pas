@@ -23,7 +23,7 @@ type
     gbxLog: TGroupBox;
     imLogo: TImage;
     gbxMoves: TGroupBox;
-    btnGetMain: TBitBtn;
+    btnGetMail: TBitBtn;
     ToolButton4: TToolButton;
     AL: TActionList;
     IL: TImageList;
@@ -31,6 +31,9 @@ type
     Msg: TIdMessage;
     btnParseXml: TBitBtn;
     btnLoadToDB: TBitBtn;
+    actGetMail: TAction;
+    actParceXML: TAction;
+    actLoadToDB: TAction;
   private
     { Private declarations }
   public

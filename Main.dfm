@@ -1573,11 +1573,12 @@ object fmMain: TfmMain
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      object btnGetMain: TBitBtn
+      object btnGetMail: TBitBtn
         Left = 2
         Top = 24
         Width = 112
         Height = 25
+        Action = actGetMail
         Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
         TabOrder = 0
       end
@@ -1586,7 +1587,8 @@ object fmMain: TfmMain
         Top = 48
         Width = 112
         Height = 25
-        Caption = '&'#1057#1087#1072#1088#1089#1080#1090#1100' XML'
+        Action = actParceXML
+        Caption = '&'#1057#1087#1072#1088#1089#1080#1090#1100'XML'
         TabOrder = 1
       end
       object btnLoadToDB: TBitBtn
@@ -1594,7 +1596,8 @@ object fmMain: TfmMain
         Top = 72
         Width = 111
         Height = 25
-        Caption = 'btnLoadToDB'
+        Action = actLoadToDB
+        Caption = '&'#1047#1072#1075#1088#1091#1079#1080#1090#1100
         TabOrder = 2
       end
     end
@@ -1602,6 +1605,18 @@ object fmMain: TfmMain
   object AL: TActionList
     Left = 536
     Top = 80
+    object actGetMail: TAction
+      Category = 'Data'
+      Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
+    end
+    object actParceXML: TAction
+      Category = 'Data'
+      Caption = '&'#1057#1087#1072#1088#1089#1080#1090#1100'XML'
+    end
+    object actLoadToDB: TAction
+      Category = 'Data'
+      Caption = '&'#1047#1072#1075#1088#1091#1079#1080#1090#1100
+    end
   end
   object IL: TImageList
     Left = 536
