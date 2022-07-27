@@ -1608,6 +1608,7 @@ object fmMain: TfmMain
     object actGetMail: TAction
       Category = 'Data'
       Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
+      OnExecute = actGetMailExecute
     end
     object actParceXML: TAction
       Category = 'Data'

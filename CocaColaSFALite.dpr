@@ -3,7 +3,8 @@ program CocaColaSFALite;
 uses
   Vcl.Forms,
   Main in 'Main.pas' {fmMain},
-  DM in 'DM.pas' {AppData: TDataModule};
+  DM in 'DM.pas' {AppData: TDataModule},
+  SConsts in 'SConsts.pas';
 
 {$R *.res}
 

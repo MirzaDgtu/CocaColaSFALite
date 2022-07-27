@@ -6,8 +6,10 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Samples.Gauges, Vcl.ExtCtrls,
   Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ToolWin, Vcl.Imaging.pngimage, Vcl.Buttons,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, IdBaseComponent,
-  IdMessage;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, IdMessage, IdAttachmentFile,
+  IdText, IdSMTP, IdPOP3, IdCoderHeader, IdMessageClient, IdExplicitTLSClientServerBase,
+  IdBaseComponent, IdComponent, IdIOHandler, IdIOHandlerSocket,
+  IdIOHandlerStack, IdSSL, IdSSLOpenSSL;
 
 type
   TfmMain = class(TForm)
@@ -34,6 +36,7 @@ type
     actGetMail: TAction;
     actParceXML: TAction;
     actLoadToDB: TAction;
+    procedure actGetMailExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -46,5 +49,10 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfmMain.actGetMailExecute(Sender: TObject);
+begin
+//  ssss
+end;
 
 end.
