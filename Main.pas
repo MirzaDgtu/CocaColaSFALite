@@ -37,8 +37,9 @@ type
     actParceXML: TAction;
     actLoadToDB: TAction;
     OpenSSL: TIdSSLIOHandlerSocketOpenSSL;
-    procedure btnGetMailClick(Sender: TObject);
+    POP: TIdPOP3;
     procedure MsgInitializeISO(var VHeaderEncoding: Char; var VCharSet: string);
+    procedure actGetMailExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -52,13 +53,15 @@ implementation
 
 {$R *.dfm}
 
-procedure TfmMain.btnGetMailClick(Sender: TObject);
-var
-  SMTP: TIdSMTP;
+uses SConsts;
+
+procedure TfmMain.actGetMailExecute(Sender: TObject);
+{var
+  SMTP: TidPOP3;
   i: integer;
 begin
   try
-    Msg.From.Address := sFromEmailAdress + ';mirzali.pirmagomedov@vostok-td.ru';
+  //  Msg.From.Address := sFromEmailAdress + ';mirzali.pirmagomedov@vostok-td.ru';
     Msg.ContentType := 'multipart/related';        // Кодировка для русского языка
     Msg.CharSet := 'Windows-1251';          // иначе будут ????? в письме
     Msg.IsEncoded := True;
@@ -68,7 +71,6 @@ begin
         try
          SMTP.Host := 'pop.mail.ru';
          SMTP.Port := 110;
-         SMTP.AuthType := satDefault;
          SMTP.Username := 'reports@vostok-td.ru';
          SMTP.Password := 'uaA2eAiRSo^2';
 
@@ -88,15 +90,15 @@ begin
            Begin
              if Msg.MessageParts.Items[i] is TIdAttachmentFile then
               Begin
-                if FileExists(TIdAttachmentFile(Msg.MessageParts.Items[i].FileName)) then
-                  DeleteFile(TIdAttachmentFile(Msg.MessageParts.Items[i].FileName));
+                if FileExists(TIdAttachmentFile(Msg.MessageParts.Items[i].FileName).FileName) then
+                  DeleteFile(TIdAttachmentFile(Msg.MessageParts.Items[i].FileName).FileName);
                   TIdAttachmentFile(Msg.MessageParts.Items[i].FileName).SaveToFile(Msg.MessageParts.Items[i].FileName);
               End;
 
               if Msg.MessageParts.Items[i] is TIdText then
                 Begin
                   memoLog.Lines.Add('Текст письма от ' + Msg.From.Address);
-                  memoLog.Lines.Add(TIdText(Msg.MessageParts.Items[i]).Body);
+                  memoLog.Lines.Add(TIdText(Msg.MessageParts.Items[i]).Body.Text);
                 End;
            End;
         except
@@ -104,11 +106,67 @@ begin
             memoLog.Lines.Add('Ошибка при отправке письма - ' + err.Message);
         end;
       finally
-
+        SMTP.Disconnect;
       end;
   finally
 
+  end;     }
+
+var
+  MsgCount: integer;
+  i, c: integer;
+Begin
+  try
+
+    Msg.ContentType := 'multipart/related';        // Кодировка для русского языка
+    Msg.CharSet := 'Windows-1251';          // иначе будут ????? в письме
+    Msg.IsEncoded := True;
+
+    POP.Connect;
+    MsgCount := POP.CheckMessages;
+    memoLog.Lines.Add('Количество писем - ' + MsgCount.ToString);
+
+    for I := 1 to MsgCount do
+    try
+      Msg.Clear;
+      POP.Retrieve(i, Msg);
+
+      if Msg.From.Address = 'subwoofer.666@yandex.ru' then
+        Begin      
+          for c := 0 to Msg.MessageParts.Count-1 do
+              try
+       //          if Msg.MessageParts.Items[c] is TIdAttachmentFile then
+       //           Begin
+       //             TIdAttachmentFile(Msg.MessageParts.Items[i].FileName).SaveToFile(ExtractFilePath(GetModuleName(0)) + 'In\' +  Msg.MessageParts.Items[i].FileName);
+       //            End;
+
+                 if Msg.MessageParts.Items[c] is TIdText then
+                  Begin
+                    memoLog.Lines.Add('Текст письма от ' + Msg.From.Address);
+                    memoLog.Lines.Add('Тема письма - ' + Msg.Subject);
+                    memoLog.Lines.Add(TIdText(Msg.MessageParts.Items[c]).Body);
+                  End;
+              except
+                on exc: Exception do
+                  Begin
+                    memoLog.Lines.Add('Ошибка получения информации из письма от ' + Msg.From.Address + '. Сообщение - ' + exc.Message);
+                    Continue;
+                  End;
+              end;
+        End;
+
+
+    except
+      on ex: Exception do
+        Begin
+          memoLog.Lines.Add('Ошибка при получении письма. Сообщение: ' + ex.Message);
+          Continue;
+        End;
+    end;
+  finally
+    POP.Disconnect;
   end;
+
 
 end;
 

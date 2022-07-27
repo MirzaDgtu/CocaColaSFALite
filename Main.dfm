@@ -1581,7 +1581,6 @@ object fmMain: TfmMain
         Action = actGetMail
         Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
         TabOrder = 0
-        OnClick = btnGetMailClick
       end
       object btnParseXml: TBitBtn
         Left = 2
@@ -1609,6 +1608,7 @@ object fmMain: TfmMain
     object actGetMail: TAction
       Category = 'Data'
       Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
+      OnExecute = actGetMailExecute
     end
     object actParceXML: TAction
       Category = 'Data'
@@ -1643,13 +1643,26 @@ object fmMain: TfmMain
     Top = 248
   end
   object OpenSSL: TIdSSLIOHandlerSocketOpenSSL
+    Destination = 'pop.mail.ru:110'
+    Host = 'pop.mail.ru'
     MaxLineAction = maException
-    Port = 0
+    Port = 110
     DefaultPort = 0
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
     Left = 534
     Top = 305
+  end
+  object POP: TIdPOP3
+    IOHandler = OpenSSL
+    AutoLogin = True
+    Host = 'pop.mail.ru'
+    Username = 'reports@vostok-td.ru'
+    UseTLS = utUseExplicitTLS
+    Password = 'uaA2eAiRSo^2'
+    SASLMechanisms = <>
+    Left = 536
+    Top = 360
   end
 end
