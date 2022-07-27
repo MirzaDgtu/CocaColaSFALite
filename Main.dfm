@@ -77,7 +77,7 @@ object fmMain: TfmMain
         Height = 453
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 4
+        ExplicitLeft = 5
         ExplicitTop = 11
       end
     end
@@ -1581,6 +1581,7 @@ object fmMain: TfmMain
         Action = actGetMail
         Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
         TabOrder = 0
+        OnClick = btnGetMailClick
       end
       object btnParseXml: TBitBtn
         Left = 2
@@ -1608,7 +1609,6 @@ object fmMain: TfmMain
     object actGetMail: TAction
       Category = 'Data'
       Caption = '&'#1055#1086#1083#1091#1095#1080#1090#1100' '#1087#1080#1089#1100#1084#1086
-      OnExecute = actGetMailExecute
     end
     object actParceXML: TAction
       Category = 'Data'
@@ -1640,5 +1640,15 @@ object fmMain: TfmMain
     ConvertPreamble = True
     Left = 536
     Top = 248
+  end
+  object OpenSSL: TIdSSLIOHandlerSocketOpenSSL
+    MaxLineAction = maException
+    Port = 0
+    DefaultPort = 0
+    SSLOptions.Mode = sslmUnassigned
+    SSLOptions.VerifyMode = []
+    SSLOptions.VerifyDepth = 0
+    Left = 534
+    Top = 305
   end
 end

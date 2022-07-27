@@ -3,8 +3,8 @@ unit SConsts;
 interface
 
 resourcestring
-  sEmail = '';
-  sPassword = '';
+  sEmail = 'reports@vostok-td.ru';
+  sEmailPassword = 'uaA2eAiRSo^2';
 
 implementation
 

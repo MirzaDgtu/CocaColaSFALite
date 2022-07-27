@@ -9,7 +9,7 @@ uses
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, IdMessage, IdAttachmentFile,
   IdText, IdSMTP, IdPOP3, IdCoderHeader, IdMessageClient, IdExplicitTLSClientServerBase,
   IdBaseComponent, IdComponent, IdIOHandler, IdIOHandlerSocket,
-  IdIOHandlerStack, IdSSL, IdSSLOpenSSL;
+  IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdTCPConnection, IdTCPClient;
 
 type
   TfmMain = class(TForm)
@@ -36,7 +36,8 @@ type
     actGetMail: TAction;
     actParceXML: TAction;
     actLoadToDB: TAction;
-    procedure actGetMailExecute(Sender: TObject);
+    OpenSSL: TIdSSLIOHandlerSocketOpenSSL;
+    procedure btnGetMailClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -50,9 +51,46 @@ implementation
 
 {$R *.dfm}
 
-procedure TfmMain.actGetMailExecute(Sender: TObject);
+procedure TfmMain.btnGetMailClick(Sender: TObject);
+var
+  SMTP: TIdSMTP;
 begin
-//  ssss
+  try
+    Msg.ContentType := 'text/plain';        // Кодировка для русского языка
+    Msg.CharSet := 'Windows-1251';          // иначе будут ????? в письме
+    Msg.IsEncoded := True;
+
+    SMTP := TidPOP3.Create(nil);
+      try
+        try
+         SMTP.Host := 'pop.mail.ru';
+         SMTP.Port := 110;
+         SMTP.AuthType := satDefault;
+         SMTP.Username := 'reports@vostok-td.ru';
+         SMTP.Password := 'uaA2eAiRSo^2';
+
+         OpenSSL.Destination := SMTP.Host + ':' + IntToStr(SMTP.Port);
+         OpenSSL.Host := SMTP.Host;
+         OpenSSL.Port := SMTP.Port;
+         OpenSSL.DefaultPort := 0;
+         OpenSSL.SSLOptions.Mode := sslmUnassigned;
+
+         SMTP.IOHandler := OpenSSL;
+         SMTP.UseTLS := utUseExplicitTLS;
+
+         SMTP.Connect;
+         SMTP.Retrieve(SMTP.CheckMessages-1, Msg);
+        except
+          on err: Exception do
+            memoLog.Lines.Add('Ошибка при отправке письма - ' + err.Message);
+        end;
+      finally
+
+      end;
+  finally
+
+  end;
+
 end;
 
 end.
