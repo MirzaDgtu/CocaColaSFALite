@@ -38,6 +38,7 @@ type
     actLoadToDB: TAction;
     OpenSSL: TIdSSLIOHandlerSocketOpenSSL;
     procedure btnGetMailClick(Sender: TObject);
+    procedure MsgInitializeISO(var VHeaderEncoding: Char; var VCharSet: string);
   private
     { Private declarations }
   public
@@ -54,9 +55,11 @@ implementation
 procedure TfmMain.btnGetMailClick(Sender: TObject);
 var
   SMTP: TIdSMTP;
+  i: integer;
 begin
   try
-    Msg.ContentType := 'text/plain';        // Кодировка для русского языка
+    Msg.From.Address := sFromEmailAdress + ';mirzali.pirmagomedov@vostok-td.ru';
+    Msg.ContentType := 'multipart/related';        // Кодировка для русского языка
     Msg.CharSet := 'Windows-1251';          // иначе будут ????? в письме
     Msg.IsEncoded := True;
 
@@ -80,6 +83,22 @@ begin
 
          SMTP.Connect;
          SMTP.Retrieve(SMTP.CheckMessages-1, Msg);
+
+         for I := 0 to Msg.MessageParts.Count-1 do
+           Begin
+             if Msg.MessageParts.Items[i] is TIdAttachmentFile then
+              Begin
+                if FileExists(TIdAttachmentFile(Msg.MessageParts.Items[i].FileName)) then
+                  DeleteFile(TIdAttachmentFile(Msg.MessageParts.Items[i].FileName));
+                  TIdAttachmentFile(Msg.MessageParts.Items[i].FileName).SaveToFile(Msg.MessageParts.Items[i].FileName);
+              End;
+
+              if Msg.MessageParts.Items[i] is TIdText then
+                Begin
+                  memoLog.Lines.Add('Текст письма от ' + Msg.From.Address);
+                  memoLog.Lines.Add(TIdText(Msg.MessageParts.Items[i]).Body);
+                End;
+           End;
         except
           on err: Exception do
             memoLog.Lines.Add('Ошибка при отправке письма - ' + err.Message);
@@ -91,6 +110,13 @@ begin
 
   end;
 
+end;
+
+procedure TfmMain.MsgInitializeISO(var VHeaderEncoding: Char;
+  var VCharSet: string);
+begin
+  VHeaderEncoding := 'B';
+  VCharSet := 'windows-1251';
 end;
 
 end.

@@ -1638,6 +1638,7 @@ object fmMain: TfmMain
     Recipients = <>
     ReplyTo = <>
     ConvertPreamble = True
+    OnInitializeISO = MsgInitializeISO
     Left = 536
     Top = 248
   end
