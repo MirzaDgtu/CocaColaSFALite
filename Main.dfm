@@ -19,7 +19,6 @@ object fmMain: TfmMain
     Width = 592
     Height = 19
     Panels = <>
-    ExplicitWidth = 475
   end
   object pnlLog: TPanel
     Left = 288
@@ -35,7 +34,6 @@ object fmMain: TfmMain
       Height = 23
       Align = alBottom
       TabOrder = 0
-      ExplicitWidth = 233
       object ToolButton1: TToolButton
         Left = 0
         Top = 0
@@ -1613,6 +1611,7 @@ object fmMain: TfmMain
     object actParceXML: TAction
       Category = 'Data'
       Caption = '&'#1057#1087#1072#1088#1089#1080#1090#1100'XML'
+      OnExecute = actParceXMLExecute
     end
     object actLoadToDB: TAction
       Category = 'Data'
@@ -1639,8 +1638,8 @@ object fmMain: TfmMain
     ReplyTo = <>
     ConvertPreamble = True
     OnInitializeISO = MsgInitializeISO
-    Left = 536
-    Top = 248
+    Left = 440
+    Top = 80
   end
   object OpenSSL: TIdSSLIOHandlerSocketOpenSSL
     Destination = 'pop.mail.ru:110'
@@ -1651,8 +1650,8 @@ object fmMain: TfmMain
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 534
-    Top = 305
+    Left = 438
+    Top = 137
   end
   object POP: TIdPOP3
     IOHandler = OpenSSL
@@ -1662,7 +1661,11 @@ object fmMain: TfmMain
     UseTLS = utUseExplicitTLS
     Password = 'uaA2eAiRSo^2'
     SASLMechanisms = <>
-    Left = 536
-    Top = 360
+    Left = 440
+    Top = 192
+  end
+  object XMLDoc: TXMLDocument
+    Left = 488
+    Top = 80
   end
 end

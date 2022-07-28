@@ -9,7 +9,8 @@ uses
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, IdMessage, IdAttachmentFile,
   IdText, IdSMTP, IdPOP3, IdCoderHeader, IdMessageClient, IdExplicitTLSClientServerBase,
   IdBaseComponent, IdComponent, IdIOHandler, IdIOHandlerSocket,
-  IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdTCPConnection, IdTCPClient;
+  IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdTCPConnection, IdTCPClient,
+  Xml.xmldom, Xml.XMLIntf, Xml.XMLDoc;
 
 type
   TfmMain = class(TForm)
@@ -38,8 +39,10 @@ type
     actLoadToDB: TAction;
     OpenSSL: TIdSSLIOHandlerSocketOpenSSL;
     POP: TIdPOP3;
+    XMLDoc: TXMLDocument;
     procedure MsgInitializeISO(var VHeaderEncoding: Char; var VCharSet: string);
     procedure actGetMailExecute(Sender: TObject);
+    procedure actParceXMLExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -153,6 +156,13 @@ Begin
     POP.Disconnect;
   end;
 
+
+end;
+
+procedure TfmMain.actParceXMLExecute(Sender: TObject);
+var
+  i: integer;
+begin
 
 end;
 
