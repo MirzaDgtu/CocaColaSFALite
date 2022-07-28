@@ -45,6 +45,7 @@ type
     procedure actParceXMLExecute(Sender: TObject);
   private
     { Private declarations }
+    function getActualDocument(): string;
   public
     { Public declarations }
   end;
@@ -161,9 +162,42 @@ end;
 
 procedure TfmMain.actParceXMLExecute(Sender: TObject);
 var
+  rootNode: IXMLNode;
+  rootNodeOrders: IXMLNode;
   i: integer;
+  strFilePath: string;
 begin
+   if getActualDocument().IsEmpty then
+    Begin
+      memoLog.Lines.Add('Файл заказов не обнаружен');
+      Exit;
+    End;
 
+    memoLog.Lines.Add('Путь до файла: ' + ExtractFilePath(GetModuleName(0)));
+
+end;
+
+// Получение последнего файла из папки In
+function TfmMain.getActualDocument: string;
+var
+  sr: TSearchRec;
+  dt: TDateTime;
+  fn: string;
+begin
+ if FindFirst(ExtractFilePath(GetModuleName(0)) + 'In\*.xml', faAnyfile, sr) = 0 then
+  begin
+    dt := sr.Time;
+    fn := sr.Name;
+    repeat
+      if sr.Time > dt then
+      begin
+        dt := sr.Time;
+        fn := sr.Name;
+      end;
+    until FindNext(sr) <> 0;
+  end;
+      Result := fn;
+  FindClose(sr);
 end;
 
 procedure TfmMain.MsgInitializeISO(var VHeaderEncoding: Char;
