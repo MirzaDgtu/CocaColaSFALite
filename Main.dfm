@@ -67,7 +67,6 @@ object fmMain: TfmMain
       Align = alClient
       Caption = '&'#1051#1086#1075' '#1089#1086#1073#1099#1090#1080#1081
       TabOrder = 1
-      ExplicitWidth = 233
       object memoLog: TMemo
         Left = 2
         Top = 15
@@ -75,8 +74,6 @@ object fmMain: TfmMain
         Height = 453
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 5
-        ExplicitTop = 11
       end
     end
   end
@@ -87,7 +84,6 @@ object fmMain: TfmMain
     Height = 495
     Align = alClient
     TabOrder = 2
-    ExplicitWidth = 240
     object ggProgress: TGauge
       Left = 1
       Top = 464
@@ -1590,9 +1586,9 @@ object fmMain: TfmMain
         TabOrder = 1
       end
       object btnLoadToDB: TBitBtn
-        Left = 3
+        Left = 2
         Top = 72
-        Width = 111
+        Width = 112
         Height = 25
         Action = actLoadToDB
         Caption = '&'#1047#1072#1075#1088#1091#1079#1080#1090#1100
@@ -1627,7 +1623,7 @@ object fmMain: TfmMain
     Top = 192
   end
   object Msg: TIdMessage
-    AttachmentEncoding = 'MIME'
+    AttachmentEncoding = 'UUE'
     BccList = <>
     CCList = <>
     Encoding = meDefault

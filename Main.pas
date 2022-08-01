@@ -163,8 +163,8 @@ end;
 procedure TfmMain.actParceXMLExecute(Sender: TObject);
 var
   rootNode: IXMLNode;
-  rootNodeOrders: IXMLNode;
-  i: integer;
+  rootNodeOrders, rootNodeOrdersBody: IXMLNode;
+  i, j: integer;
   strFilePath: string;
 begin
    if getActualDocument().IsEmpty then
@@ -173,8 +173,33 @@ begin
       Exit;
     End;
 
-    memoLog.Lines.Add('Путь до файла: ' + ExtractFilePath(GetModuleName(0)));
+    try
+      strFilePath := ExtractFilePath(GetModuleName(0)) + 'In\' + getActualDocument();
+    
+      memoLog.Lines.Add('Путь до файла: ' + strFilePath);
+      XMLDoc.FileName := strFilePath;
+      XMLDoc.Active := True;
 
+      rootNode := XMLDoc.DocumentElement;
+      memoLog.Lines.Add('Документ готов к обработке');
+
+      for i := 0 to rootNode.ChildNodes['Table'].ChildNodes.Count-1 do
+        try
+          rootNodeOrders := rootNode.ChildNodes['Table'].ChildNodes[i];
+
+          memoLog.Lines.Add('ORDERID - ' + rootNodeOrders.ChildNodes['ORDERID'].Text);
+          memoLog.Lines.Add('DELIVERY_DATE - ' + rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text);
+          
+        except
+          on ex: Exception do
+            Begin
+              memoLog.Lines.Add('Ошибка получения поля. Сообщение: ' + ex.Message);
+              Continue;
+            End;
+        end;
+    finally
+      XMLDoc.Active := False;
+    end;
 end;
 
 // Получение последнего файла из папки In
