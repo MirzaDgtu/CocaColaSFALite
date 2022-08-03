@@ -234,7 +234,7 @@ begin
               end;
 
 
-              memoLog.Lines.Add('Шапка заявки - ' + rootNodeOrders.ChildNodes['ORDERID'].Text + ' успешно добавлена');
+              memoLog.Lines.Add(#13+'Шапка заявки - ' + rootNodeOrders.ChildNodes['ORDERID'].Text + ' успешно добавлена'+#13);
             End;
 
 
