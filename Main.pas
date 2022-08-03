@@ -202,9 +202,8 @@ begin
           memoLog.Lines.Add('Источник заказа ' + rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text);
 
           // Body doc
-
           memoLog.Lines.Add('Номер заказа - ' + rootNodeOrders.ChildNodes['ORDERID'].Text);
-          memoLog.Lines.Add('Плановая дата доставки - ' + rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text);
+          memoLog.Lines.Add('Дата взятия заказа ' + rootNodeOrders.ChildNodes['ORDER_DATE'].Text);
           memoLog.Lines.Add('Номер ТТ в базе CCH - ' + rootNodeOrders.ChildNodes['CLIENTID'].Text);
           memoLog.Lines.Add('Код ТТ(Фолио) -  ' + rootNodeOrders.ChildNodes['CLIENTID_DISTRIB'].Text);
           memoLog.Lines.Add('Код продукта в базе CCH - ' + rootNodeOrders.ChildNodes['PRODUCT_CODE'].Text);
@@ -212,18 +211,14 @@ begin
           memoLog.Lines.Add('Количество мест (упаковок товара) - ' + rootNodeOrders.ChildNodes['QTY_CASES'].Text);
           memoLog.Lines.Add('Кол-во штук товара ' + rootNodeOrders.ChildNodes['QTY_BOTTLES'].Text);
           memoLog.Lines.Add('Кол-во бесплатных (бонусных) упаковок ' + rootNodeOrders.ChildNodes['FREE_CASE'].Text);
-
-          memoLog.Lines.Add('Комментарий к заказу - ' + rootNodeOrders.ChildNodes['DELIVERY_NOTE_MSG_1'].Text);
-          memoLog.Lines.Add('ИНН клиента ' + rootNodeOrders.ChildNodes['FISCAL_NUMBER'].Text);
-          memoLog.Lines.Add('Дата взятия заказа ' + rootNodeOrders.ChildNodes['ORDER_DATE'].Text);
           memoLog.Lines.Add('Скидка(руб.) от полной стоимости без НДС ' + rootNodeOrders.ChildNodes['DISCOUNT'].Text);
           memoLog.Lines.Add('Цена за уп. в руб. без НДС с учетом скидки  ' + rootNodeOrders.ChildNodes['PRICE_CASE'].Text);
           memoLog.Lines.Add('Цена за 1 штуку штучного товара (крышки, стаканчики, соломка) - ' + rootNodeOrders.ChildNodes['PRICE_EA'].Text);
           memoLog.Lines.Add('Код склада дистрибьютора CCH ' + rootNodeOrders.ChildNodes['ACTGRINUM'].Text);
           memoLog.Lines.Add('Кол-во упаковок со скидкой - ' + rootNodeOrders.ChildNodes['CASES_DISCOUNTED'].Text);
-          memoLog.Lines.Add('Всегда нулевое значение ' + rootNodeOrders.ChildNodes['PCS_DISCOUNTED'].Text);
           memoLog.Lines.Add('Идентификатор промо механики -  ' + rootNodeOrders.ChildNodes['DISCOUNT_PROMO_ID'].Text);
           memoLog.Lines.Add('Итоговая стоимость по товару - ' + rootNodeOrders.ChildNodes['GROSS_VALUE'].Text);
+          memoLog.Lines.Add('Источник заказа ' + rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text);
 
           memoLog.Lines.Add(EmptyStr);
 
