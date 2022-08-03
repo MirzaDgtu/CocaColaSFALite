@@ -187,6 +187,7 @@ begin
         try
           rootNodeOrders := rootNode.ChildNodes[i];
 
+          // Head doc
           memoLog.Lines.Add('Номер заказа - ' + rootNodeOrders.ChildNodes['ORDERID'].Text);
           memoLog.Lines.Add('Плановая дата доставки - ' + rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text);
           memoLog.Lines.Add('Имя ТП в базе CCH - ' + rootNodeOrders.ChildNodes['SALES_REPID'].Text);
