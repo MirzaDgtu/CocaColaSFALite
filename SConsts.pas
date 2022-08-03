@@ -7,6 +7,12 @@ resourcestring
   sEmailPassword = 'uaA2eAiRSo^2';
   sFromEmailAdress = 'Phoenix.Russia@cchellenic.com';
 
+  // SQL requests
+  SSQLAddHeadOrder = 'EXEC REPORTS..CocaCola_SFA_AddHeadOrder ''%s'', ''%s'', ''%s'', ''%s'', ' +
+                                                              ' %d, ''%s'', ''%s'', ''%s'', ' +
+                                                              ' ''%s'', ''%s'', ''%s'', ''%s'', ' +
+                                                              ' ''%s'', ''%s''';
+
 implementation
 
 end.
