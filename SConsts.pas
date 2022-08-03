@@ -8,10 +8,10 @@ resourcestring
   sFromEmailAdress = 'Phoenix.Russia@cchellenic.com';
 
   // SQL requests
-  SSQLAddHeadOrder = 'EXEC REPORTS..CocaCola_SFA_AddHeadOrder ''%s'', ''%s'', ''%s'', ''%s'', ' +
+  SSQLAddHeadOrder = 'EXEC REPORTS..CocaCola_SFA_AddHeadOrder ''%s'', ''%s'', ''%s'', ''%s'', '  +
+                                                              ' ''%s'', ''%s'', '; {''%s'', ''%s'', ' +
                                                               ' ''%s'', ''%s'', ''%s'', ''%s'', ' +
-                                                              ' ''%s'', ''%s'', ''%s'', ''%s'', ' +
-                                                              ' ''%s'', ''%s''';
+                                                              ' ''%s'', ''%s''';  }
 
   SSQLAddMoveOrder  = 'EXEC REPORTS..CocaCola_SFA_AddMoveOrder ''%s'', ''%s'', %d, ''%s'', ''%s'', ' +
                                                                ' ''%s'', ''%s'', ''%s'' , ''%s'', ''%s'', '+

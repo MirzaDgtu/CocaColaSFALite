@@ -194,7 +194,7 @@ begin
 
               // Head doc
               memoLog.Lines.Add('Номер заказа - ' + rootNodeOrders.ChildNodes['ORDERID'].Text);
-          memoLog.Lines.Add('Дата взятия заказа ' + rootNodeOrders.ChildNodes['ORDER_DATE'].Text);
+              memoLog.Lines.Add('Дата взятия заказа ' + rootNodeOrders.ChildNodes['ORDER_DATE'].Text);
               memoLog.Lines.Add('Плановая дата доставки - ' + rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text);
               memoLog.Lines.Add('Имя ТП в базе CCH - ' + rootNodeOrders.ChildNodes['SALES_REPID'].Text);
               memoLog.Lines.Add('Номер ТТ в базе CCH - ' + rootNodeOrders.ChildNodes['CLIENTID'].Text);
@@ -207,22 +207,33 @@ begin
               memoLog.Lines.Add('Населенный пункт доставки - ' + rootNodeOrders.ChildNodes['CITY'].Text);
               memoLog.Lines.Add('Источник заказа ' + rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text);
 
-              // Recorting to DB
-              AppData.Cmd.CommandText := Format(SSQLAddHeadOrder, [rootNodeOrders.ChildNodes['ORDERID'].Text,
-                                                                   rootNodeOrders.ChildNodes['ORDER_DATE'].Text,
-                                                                   rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text,
-                                                                   rootNodeOrders.ChildNodes['SALES_REPID'].Text,
-                                                                   rootNodeOrders.ChildNodes['CLIENTID'].Text.IsEmpty,
-                                                                   rootNodeOrders.ChildNodes['CLIENT_NAME'].Text,
-                                                                   rootNodeOrders.ChildNodes['CLIENT_ADDRESS'].Text,
-                                                                   rootNodeOrders.ChildNodes['DTC'].Text,
-                                                                   rootNodeOrders.ChildNodes['CLIENTID_DISTRIB'].Text,
-                                                                   rootNodeOrders.ChildNodes['FISCAL_NUMBER'].Text,
-                                                                   rootNodeOrders.ChildNodes['ACTGRINUM'].Text,
-                                                                   rootNodeOrders.ChildNodes['CITY'].Text,
-                                                                   rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text
-                                                                   ]);
-              AppData.Cmd.Execute;
+              try
+                // Recorting to DB
+                AppData.Cmd.CommandText := Format(SSQLAddHeadOrder, [rootNodeOrders.ChildNodes['ORDERID'].Text,
+                                                                     rootNodeOrders.ChildNodes['ORDER_DATE'].Text,
+                                                                     rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text,
+                                                                     rootNodeOrders.ChildNodes['SALES_REPID'].Text,
+                                                                     rootNodeOrders.ChildNodes['CLIENTID'].Text,
+                                                                     rootNodeOrders.ChildNodes['CLIENT_NAME'].Text,
+                                                                     StringReplace(rootNodeOrders.ChildNodes['CLIENT_ADDRESS'].Text, ';', ',', [rfReplaceAll, rfIgnoreCase]),
+                                                                     rootNodeOrders.ChildNodes['DTC'].Text,
+                                                                     rootNodeOrders.ChildNodes['CLIENTID_DISTRIB'].Text,
+                                                                     rootNodeOrders.ChildNodes['FISCAL_NUMBER'].Text,
+                                                                     rootNodeOrders.ChildNodes['ACTGRINUM'].Text,
+                                                                     StringReplace(rootNodeOrders.ChildNodes['CITY'].Text, ';', '', [rfReplaceAll, rfIgnoreCase]),
+                                                                     rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text
+                                                                     ]);
+                AppData.Cmd.Execute;
+
+                memoLog.Lines.Add(#13+AppData.Cmd.CommandText+#13);
+              except
+                on ex: Exception do
+                  Begin
+                    memoLog.Lines.Add(EmptyStr);
+                    memoLog.Lines.Add('Ошибка записи шапки заявки. Сообщение: ' + ex.Message);
+                  End;
+              end;
+
 
               memoLog.Lines.Add('Шапка заявки - ' + rootNodeOrders.ChildNodes['ORDERID'].Text + ' успешно добавлена');
             End;

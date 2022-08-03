@@ -73,6 +73,7 @@ object fmMain: TfmMain
         Width = 298
         Height = 453
         Align = alClient
+        ScrollBars = ssBoth
         TabOrder = 0
       end
     end
