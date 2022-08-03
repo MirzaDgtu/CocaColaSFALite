@@ -19,17 +19,16 @@ type
     pnlMain: TPanel;
     ggProgress: TGauge;
     tbBtns: TToolBar;
-    ToolButton1: TToolButton;
-    ToolButton2: TToolButton;
-    ToolButton3: TToolButton;
+    btnOpenLogFile: TToolButton;
+    btnSaveLogFile: TToolButton;
+    btnSendMail: TToolButton;
     memoLog: TMemo;
     gbxLog: TGroupBox;
     imLogo: TImage;
     gbxMoves: TGroupBox;
     btnGetMail: TBitBtn;
-    ToolButton4: TToolButton;
+    btnClearLog: TToolButton;
     AL: TActionList;
-    IL: TImageList;
     OD: TOpenDialog;
     Msg: TIdMessage;
     btnParseXml: TBitBtn;
@@ -40,14 +39,32 @@ type
     OpenSSL: TIdSSLIOHandlerSocketOpenSSL;
     POP: TIdPOP3;
     XMLDoc: TXMLDocument;
+    btnCloseApp: TToolButton;
+    IL: TImageList;
+    actSendMail: TAction;
+    actOpenLogFIle: TAction;
+    actSaveLogFile: TAction;
+    actCloseApp: TAction;
+    actClearLog: TAction;
     procedure MsgInitializeISO(var VHeaderEncoding: Char; var VCharSet: string);
     procedure actGetMailExecute(Sender: TObject);
     procedure actParceXMLExecute(Sender: TObject);
+    procedure actSendMailExecute(Sender: TObject);
+    procedure actOpenLogFIleExecute(Sender: TObject);
+    procedure actSaveLogFileExecute(Sender: TObject);
+    procedure actClearLogExecute(Sender: TObject);
+    procedure actCloseAppExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
+    FpathLog: String;
     { Private declarations }
     function getActualDocument(): string;
+    procedure SetpathLog(const Value: String);
   public
     { Public declarations }
+
+  published
+    property pathLog: String read FpathLog write SetpathLog;
   end;
 
 var
@@ -58,6 +75,28 @@ implementation
 {$R *.dfm}
 
 uses SConsts, DM;
+
+procedure TfmMain.actClearLogExecute(Sender: TObject);
+begin
+  if Length(Trim(memoLog.Lines.Text)) > 0 then
+    Begin
+      if MessageBox(Handle, Pchar('Окно лога содержит информацию!' +
+                                  #13 + 'Желаете сохранить?'),
+                            PChar('Очистить лог'),
+                    MB_ICONQUESTION+MB_YESNO) = ID_YES then
+        Begin
+          actSaveLogFileExecute(nil);
+          memoLog.Lines.Clear;
+        End
+      else
+        memoLog.Lines.Clear;
+    End;
+end;
+
+procedure TfmMain.actCloseAppExecute(Sender: TObject);
+begin
+  Close();
+end;
 
 procedure TfmMain.actGetMailExecute(Sender: TObject);
 var
@@ -91,7 +130,7 @@ Begin
       POP.Retrieve(i, Msg);
 
 
-      if Msg.From.Address = 'subwoofer.666@yandex.ru' then
+      if Msg.From.Address = sFromEmailAdress then
         Begin      
           memoLog.Lines.Add('Письмо от ' + Msg.From.Address);          
           for c := 0 to Msg.MessageParts.Count-1 do
@@ -158,6 +197,14 @@ Begin
   end;
 
 
+end;
+
+procedure TfmMain.actOpenLogFIleExecute(Sender: TObject);
+begin
+  OD.InitialDir := pathLog;
+  OD.FilterIndex := 3;
+  if OD.Execute then
+     memoLog.Lines.LoadFromFile(OD.FileName);
 end;
 
 procedure TfmMain.actParceXMLExecute(Sender: TObject);
@@ -325,6 +372,84 @@ begin
     end;
 end;
 
+procedure TfmMain.actSaveLogFileExecute(Sender: TObject);
+begin
+  if Length(Trim(memoLog.Lines.Text)) > 0 then
+  try
+    memoLog.Lines.SaveToFile(pathLog + 'log_' + FormatDateTime('dd-mm-yyyy hh-mm-ss', Now()) + '.log', TEncoding.UTF8);
+    memoLog.Lines.Add('Лог успешно сохранен!');
+  except
+    on ex: Exception do
+      memoLog.Lines.Add('Ошибка сохранения лога - ' + ex.Message);
+  end;
+end;
+
+procedure TfmMain.actSendMailExecute(Sender: TObject);
+var
+  SMTP: TIdSMTP;
+  Msg: TIdMessage;
+ // attach   : TIdAttachmentFile;     // Для вложений
+begin
+  { DONE 1 -opmp -cLog : Отправка письма об успешном формировании выгрузки }
+  if memoLog.Lines.Text <> EmptyStr then
+    try
+      Msg := TIdMessage.Create(nil);
+      try
+        Msg.From.Address := 'reports@vostok-td.ru';
+        Msg.From.Name := 'Поддержка ТД Восток';
+        Msg.Recipients.EMailAddresses := 'mirzali.pirmagomedov@vostok-td.ru';
+        Msg.Subject := Format('Отчёт CocaCola-SFALite - [%s] - [%s]', [{FormatDateTime('dd.mm.yyyy', dtpBegin.Date),
+                                                                       FormatDateTime('dd.mm.yyyy', dtpEnd.Date)}
+                                                                       FormatDateTime('dd.MM.yyyy hh:mm', Now()),
+                                                                       FormatDateTime('dd.MM.yyyy hh:mm', Now())]);
+
+        Msg.Body.Text := memoLog.Text;
+        Msg.Date := Now();
+        Msg.ContentType := 'text/plain';        // Кодировка для русского языка
+        Msg.CharSet := 'Windows-1251';          // иначе будут ????? в письме
+        Msg.IsEncoded := True;
+
+
+        SMTP := TIdSMTP.Create(nil);
+        try
+          try
+           SMTP.Host := 'smtp.mail.ru';
+           SMTP.Port := 465;
+           SMTP.AuthType := satDefault;
+           SMTP.Username := 'reports@vostok-td.ru';
+           SMTP.Password := 'uaA2eAiRSo^2';
+
+           OpenSSL.Destination := SMTP.Host + ':' + IntToStr(SMTP.Port);
+           OpenSSL.Host := SMTP.Host;
+           OpenSSL.Port := SMTP.Port;
+           OpenSSL.DefaultPort := 0;
+           OpenSSL.SSLOptions.Mode := sslmUnassigned;
+
+           SMTP.IOHandler := OpenSSL;
+           SMTP.UseTLS := utUseExplicitTLS;
+
+           SMTP.Connect;
+           SMTP.Send(Msg);
+          except
+            on err: Exception do
+              memoLog.Lines.Add('Ошибка при отправке письма - ' + err.Message);
+          end;
+        finally
+           FreeAndNil(SMTP);
+           memoLog.Lines.Add('Письмо о формировании отчета отправлен на электронную почту');
+        end;
+      finally
+        FreeAndNil(Msg);
+      end;
+    finally
+    end;
+end;
+
+procedure TfmMain.FormCreate(Sender: TObject);
+begin
+  SetpathLog(ExtractFilePath(GetModuleName(0)) + 'Log\');
+end;
+
 // Получение последнего файла из папки In
 function TfmMain.getActualDocument: string;
 var
@@ -353,6 +478,11 @@ procedure TfmMain.MsgInitializeISO(var VHeaderEncoding: Char;
 begin
   VHeaderEncoding := 'B';
   VCharSet := 'windows-1251';
+end;
+
+procedure TfmMain.SetpathLog(const Value: String);
+begin
+  FpathLog := Value;
 end;
 
 end.
