@@ -25,7 +25,7 @@ object fmMain: TfmMain
     Top = 0
     Width = 304
     Height = 495
-    Align = alRight
+    Align = alClient
     TabOrder = 1
     object tbBtns: TToolBar
       Left = 1
@@ -83,7 +83,7 @@ object fmMain: TfmMain
     Top = 0
     Width = 288
     Height = 495
-    Align = alClient
+    Align = alLeft
     TabOrder = 2
     object ggProgress: TGauge
       Left = 1

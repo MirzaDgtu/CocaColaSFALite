@@ -207,7 +207,7 @@ begin
               memoLog.Lines.Add('Код склада дистрибьютора CCH ' + rootNodeOrders.ChildNodes['ACTGRINUM'].Text);
               memoLog.Lines.Add('Населенный пункт доставки - ' + rootNodeOrders.ChildNodes['CITY'].Text);
               memoLog.Lines.Add('Источник заказа ' + rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text);
-              memoLog.Lines.Add('---------------------------------');
+              memoLog.Lines.Add('-------------------------------------------');
 
               try
                 // Recorting to DB
