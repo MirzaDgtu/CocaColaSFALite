@@ -9,7 +9,7 @@ resourcestring
 
   // SQL requests
   SSQLAddHeadOrder = 'EXEC REPORTS..CocaCola_SFA_AddHeadOrder ''%s'', ''%s'', ''%s'', ''%s'', ' +
-                                                              ' %d, ''%s'', ''%s'', ''%s'', ' +
+                                                              ' ''%s'', ''%s'', ''%s'', ''%s'', ' +
                                                               ' ''%s'', ''%s'', ''%s'', ''%s'', ' +
                                                               ' ''%s'', ''%s''';
 

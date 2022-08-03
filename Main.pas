@@ -212,7 +212,7 @@ begin
                                                                    rootNodeOrders.ChildNodes['ORDER_DATE'].Text,
                                                                    rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text,
                                                                    rootNodeOrders.ChildNodes['SALES_REPID'].Text,
-                                                                   (IfThen(rootNodeOrders.ChildNodes['CLIENTID'].Text.IsEmpty, '-1', rootNodeOrders.ChildNodes['CLIENTID'].Text)).ToInteger,
+                                                                   rootNodeOrders.ChildNodes['CLIENTID'].Text.IsEmpty,
                                                                    rootNodeOrders.ChildNodes['CLIENT_NAME'].Text,
                                                                    rootNodeOrders.ChildNodes['CLIENT_ADDRESS'].Text,
                                                                    rootNodeOrders.ChildNodes['DTC'].Text,
