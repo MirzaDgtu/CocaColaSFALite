@@ -7,13 +7,13 @@ GO
 -- Create date: 2022-08-03
 -- Description:	Добавление шапки заказа SFA-CocaCola
 -- =============================================
-CREATE PROCEDURE CocaCola_SFA_AddHeadOrder 
+alter PROCEDURE CocaCola_SFA_AddHeadOrder 
 	-- Add the parameters for the stored procedure here
 	@OrderUID varchar(30) = '-1', 
 	@OrderDate varchar(20) = Null,
 	@Devilery_Date varchar(20) = Null,
 	@Sales_Repid varchar(150) = Null,
-	@ClientUID int = -1,
+	@ClientID int = -1,
 	@Client_Name varchar(200) = Null,
 	@Client_Adress varchar(250) = Null,
 	@DTC varchar(20) = Null,
@@ -34,7 +34,7 @@ AS
 														  CITY, INPUT_CHANNEL)
 
 					VALUES								 (@OrderDate, @OrderDate, @Devilery_Date, @Sales_Repid,
-														  @ClientUID, @Client_Name, @Client_Adress, @DTC,
+														  @ClientID, @Client_Name, @Client_Adress, @DTC,
 														  @ClientID_Distrib, @Fiscal_Number, @Actgrinum,
 														  @City, @Input_Channel)
 

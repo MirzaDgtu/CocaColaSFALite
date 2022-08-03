@@ -10,7 +10,7 @@ uses
   IdText, IdSMTP, IdPOP3, IdCoderHeader, IdMessageClient, IdExplicitTLSClientServerBase,
   IdBaseComponent, IdComponent, IdIOHandler, IdIOHandlerSocket,
   IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdTCPConnection, IdTCPClient,
-  Xml.xmldom, Xml.XMLIntf, Xml.XMLDoc;
+  Xml.xmldom, Xml.XMLIntf, Xml.XMLDoc, System.StrUtils;
 
 type
   TfmMain = class(TForm)
@@ -57,7 +57,7 @@ implementation
 
 {$R *.dfm}
 
-uses SConsts;
+uses SConsts, DM;
 
 procedure TfmMain.actGetMailExecute(Sender: TObject);
 var
@@ -165,7 +165,7 @@ var
   rootNode: IXMLNode;
   rootNodeOrders, rootNodeOrdersBody: IXMLNode;
   i, j: integer;
-  strFilePath: string;
+  strFilePath, currOrder: string;
 begin
    if getActualDocument().IsEmpty then
     Begin
@@ -175,6 +175,7 @@ begin
 
     try
       strFilePath := ExtractFilePath(GetModuleName(0)) + 'In\' + getActualDocument();
+      currOrder := EmptyStr;
     
       memoLog.Lines.Add('Путь до файла: ' + strFilePath);
       XMLDoc.FileName := strFilePath;
@@ -187,19 +188,46 @@ begin
         try
           rootNodeOrders := rootNode.ChildNodes[i];
 
-          // Head doc
-          memoLog.Lines.Add('Номер заказа - ' + rootNodeOrders.ChildNodes['ORDERID'].Text);
-          memoLog.Lines.Add('Плановая дата доставки - ' + rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text);
-          memoLog.Lines.Add('Имя ТП в базе CCH - ' + rootNodeOrders.ChildNodes['SALES_REPID'].Text);
-          memoLog.Lines.Add('Номер ТТ в базе CCH - ' + rootNodeOrders.ChildNodes['CLIENTID'].Text);
-          memoLog.Lines.Add('Название клиента - ' + rootNodeOrders.ChildNodes['CLIENT_NAME'].Text);
-          memoLog.Lines.Add('Адрес доставки - ' + rootNodeOrders.ChildNodes['CLIENT_ADDRESS'].Text);
-          memoLog.Lines.Add('Код маршрута ТП(территории) - ' + rootNodeOrders.ChildNodes['DTC'].Text);
-          memoLog.Lines.Add('Код ТТ(Фолио) -  ' + rootNodeOrders.ChildNodes['CLIENTID_DISTRIB'].Text);
-          memoLog.Lines.Add('ИНН клиента ' + rootNodeOrders.ChildNodes['FISCAL_NUMBER'].Text);
-          memoLog.Lines.Add('Код склада дистрибьютора CCH ' + rootNodeOrders.ChildNodes['ACTGRINUM'].Text);
-          memoLog.Lines.Add('Населенный пункт доставки - ' + rootNodeOrders.ChildNodes['CITY'].Text);
-          memoLog.Lines.Add('Источник заказа ' + rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text);
+          if currOrder <> rootNodeOrders.ChildNodes['ORDERID'].Text then
+            Begin
+              currOrder := rootNodeOrders.ChildNodes['ORDERID'].Text;
+
+              // Head doc
+              memoLog.Lines.Add('Номер заказа - ' + rootNodeOrders.ChildNodes['ORDERID'].Text);
+          memoLog.Lines.Add('Дата взятия заказа ' + rootNodeOrders.ChildNodes['ORDER_DATE'].Text);
+              memoLog.Lines.Add('Плановая дата доставки - ' + rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text);
+              memoLog.Lines.Add('Имя ТП в базе CCH - ' + rootNodeOrders.ChildNodes['SALES_REPID'].Text);
+              memoLog.Lines.Add('Номер ТТ в базе CCH - ' + rootNodeOrders.ChildNodes['CLIENTID'].Text);
+              memoLog.Lines.Add('Название клиента - ' + rootNodeOrders.ChildNodes['CLIENT_NAME'].Text);
+              memoLog.Lines.Add('Адрес доставки - ' + rootNodeOrders.ChildNodes['CLIENT_ADDRESS'].Text);
+              memoLog.Lines.Add('Код маршрута ТП(территории) - ' + rootNodeOrders.ChildNodes['DTC'].Text);
+              memoLog.Lines.Add('Код ТТ(Фолио) -  ' + rootNodeOrders.ChildNodes['CLIENTID_DISTRIB'].Text);
+              memoLog.Lines.Add('ИНН клиента ' + rootNodeOrders.ChildNodes['FISCAL_NUMBER'].Text);
+              memoLog.Lines.Add('Код склада дистрибьютора CCH ' + rootNodeOrders.ChildNodes['ACTGRINUM'].Text);
+              memoLog.Lines.Add('Населенный пункт доставки - ' + rootNodeOrders.ChildNodes['CITY'].Text);
+              memoLog.Lines.Add('Источник заказа ' + rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text);
+
+              // Recorting to DB
+              AppData.Cmd.CommandText := Format(SSQLAddHeadOrder, [rootNodeOrders.ChildNodes['ORDERID'].Text,
+                                                                   rootNodeOrders.ChildNodes['ORDER_DATE'].Text,
+                                                                   rootNodeOrders.ChildNodes['DELIVERY_DATE'].Text,
+                                                                   rootNodeOrders.ChildNodes['SALES_REPID'].Text,
+                                                                   (IfThen(rootNodeOrders.ChildNodes['CLIENTID'].Text.IsEmpty, '-1', rootNodeOrders.ChildNodes['CLIENTID'].Text)).ToInteger,
+                                                                   rootNodeOrders.ChildNodes['CLIENT_NAME'].Text,
+                                                                   rootNodeOrders.ChildNodes['CLIENT_ADDRESS'].Text,
+                                                                   rootNodeOrders.ChildNodes['DTC'].Text,
+                                                                   rootNodeOrders.ChildNodes['CLIENTID_DISTRIB'].Text,
+                                                                   rootNodeOrders.ChildNodes['FISCAL_NUMBER'].Text,
+                                                                   rootNodeOrders.ChildNodes['ACTGRINUM'].Text,
+                                                                   rootNodeOrders.ChildNodes['CITY'].Text,
+                                                                   rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text
+                                                                   ]);
+              AppData.Cmd.Execute;
+
+              memoLog.Lines.Add('Шапка заявки - ' + rootNodeOrders.ChildNodes['ORDERID'].Text + ' успешно добавлена');
+            End;
+
+
 
           // Body doc
           memoLog.Lines.Add('Номер заказа - ' + rootNodeOrders.ChildNodes['ORDERID'].Text);
@@ -221,6 +249,7 @@ begin
           memoLog.Lines.Add('Источник заказа ' + rootNodeOrders.ChildNodes['INPUT_CHANNEL'].Text);
 
           memoLog.Lines.Add(EmptyStr);
+          currOrder := rootNodeOrders.ChildNodes['ORDERID'].Text;
 
         except
           on ex: Exception do
