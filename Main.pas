@@ -229,8 +229,7 @@ begin
               except
                 on ex: Exception do
                   Begin
-                    memoLog.Lines.Add(EmptyStr);
-                    memoLog.Lines.Add('Ошибка записи шапки заявки. Сообщение: ' + ex.Message);
+                    memoLog.Lines.Add(#13+'Ошибка записи шапки заявки. Сообщение: ' + ex.Message+#13);
                   End;
               end;
 
